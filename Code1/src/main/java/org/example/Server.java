@@ -7,6 +7,7 @@ import java.io.IOException;
 // import java.io.OutputStream;
 
 import com.sun.net.httpserver.HttpExchange;
+import org.json.simple.parser.ParseException;
 
 public  class Server implements HttpHandler {
     @Override
@@ -14,19 +15,29 @@ public  class Server implements HttpHandler {
         String[] path = exchange.getRequestURI().getPath().split("/");
         String query = exchange.getRequestURI().getQuery();
         Request request = new Request();
-        // Connect connect = new Connect();
         if("GET".equals(exchange.getRequestMethod())){
-            // connect.getConnection(path);
             request.handleGetRequest(exchange,path,query);
         }
         if("POST".equals(exchange.getRequestMethod())){
-            // handleGetRequest(exchange,path,query);
+            try {
+                request.handlePostRequest(exchange,path,query);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
         if("PUT".equals(exchange.getRequestMethod())){
-            // handleGetRequest(exchange,path,query);
+            try {
+                request.handlePutRequest(exchange,path,query);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
         if("DELETE".equals(exchange.getRequestMethod())){
-            // handleGetRequest(exchange,path,query);
+            try {
+                request.handleDeleteRequest(exchange,path,query);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

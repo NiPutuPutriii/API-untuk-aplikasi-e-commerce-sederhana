@@ -1,8 +1,8 @@
 package org.example;
 
-import java.net.InetSocketAddress;
-import com.sun.net.httpserver.HttpServer;
-import java.io.IOException;
+import java.net.InetSocketAddress; //untuk menentukan alamat dan port server
+import com.sun.net.httpserver.HttpServer; //untuk membuat server HTTP
+import java.io.IOException; //untuk mengatasi exception
 import java.util.concurrent.Executors;
 
 public class Main {
