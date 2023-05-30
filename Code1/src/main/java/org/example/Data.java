@@ -24,7 +24,7 @@ public class Data {
                     ResultSet rs = statement.executeQuery("select * from " + path[1] + " where " + query );
                     while(rs.next()) {
                         JSONObject record = new JSONObject();
-                        record.put("Id", rs.getInt("id"));
+                        record.put("Id_User", rs.getInt("id"));
                         record.put("First_Name", rs.getString("first_name"));
                         record.put("Last_Name", rs.getString("last_name"));
                         record.put("Email", rs.getString("email"));
@@ -43,11 +43,11 @@ public class Data {
                     ResultSet rs = statement.executeQuery("select * from " + path[1]);
                     while(rs.next()) {
                         JSONObject record = new JSONObject();
-                        record.put("id", rs.getInt("id_user"));
+                        record.put("Id_User", rs.getInt("id_user"));
                         record.put("First_Name", rs.getString("first_name"));
                         record.put("Last_Name", rs.getString("last_name"));
                         record.put("Email", rs.getString("email"));
-                        record.put("Phone Number", rs.getString("phone_number"));
+                        record.put("Phone_Number", rs.getString("phone_number"));
                         record.put("Type", rs.getString("type"));
                         array.add(record);
                     }
@@ -58,11 +58,11 @@ public class Data {
                     ResultSet rs = statement.executeQuery("select * from " + path[1] + " where id_user=" + path[2]);
                     while(rs.next()) {
                         JSONObject record = new JSONObject();
-                        record.put("id", rs.getInt("id_user"));
+                        record.put("Id_User", rs.getInt("id_user"));
                         record.put("First_Name", rs.getString("first_name"));
                         record.put("Last_Name", rs.getString("last_name"));
                         record.put("Email", rs.getString("email"));
-                        record.put("Phone Number", rs.getString("phone_number"));
+                        record.put("Phone_Number", rs.getString("phone_number"));
                         record.put("Type", rs.getString("type"));
                         array.add(record);
                     }
@@ -74,7 +74,7 @@ public class Data {
                         ResultSet rs = statement.executeQuery("select users.id_user, users.first_name, users.last_name, orders.note, products.title, order_details.quantity, order_details.price from orders inner join users on orders.id_user = users.id_user inner join order_details on order_details.id_order = orders.id_user inner join products on products.id_product = order_details.id_product where orders.id_user=" + path[2]);
                         while(rs.next()) {
                             JSONObject record = new JSONObject();
-                            record.put("Id", rs.getInt("id_user"));
+                            record.put("Id_User", rs.getInt("id_user"));
                             record.put("First_Name", rs.getString("first_name"));
                             record.put("Last_Name", rs.getString("last_name"));
                             record.put("Note", rs.getString("note"));
@@ -90,7 +90,7 @@ public class Data {
                         ResultSet rs = statement.executeQuery("select users.id_user, users.first_name, users.last_name, products.title,products.price,products.description, products.stock from products inner join users on products.id_user = users.id_user where products.id_user=" + path[2]);
                         while(rs.next()) {
                             JSONObject record = new JSONObject();
-                            record.put("Id", rs.getInt("id_user"));
+                            record.put("Id_User", rs.getInt("id_user"));
                             record.put("First_Name", rs.getString("first_name"));
                             record.put("Last_Name", rs.getString("last_name"));
                             record.put("Title", rs.getString("title"));
@@ -106,7 +106,7 @@ public class Data {
                         ResultSet rs = statement.executeQuery("select users.id_user, users.first_name, users.last_name,reviews.star,reviews.description from reviews inner join orders on reviews.id_order = orders.id_user inner join users on orders.id_user = users.id_user where orders.id_user="+ path[2]);
                         while(rs.next()) {
                             JSONObject record = new JSONObject();
-                            record.put("Id", rs.getInt("id_user"));
+                            record.put("Id_User", rs.getInt("id_user"));
                             record.put("First_Name", rs.getString("first_name"));
                             record.put("Last_Name", rs.getString("last_name"));
                             record.put("Star", rs.getString("star"));
@@ -130,6 +130,7 @@ public class Data {
                         record.put("Price", rs.getString("price"));
                         record.put("Description", rs.getString("description"));
                         record.put("Title", rs.getString("title"));
+                        record.put("Id_User", rs.getInt("id_user"));
                         record.put("Id", rs.getInt("id_product"));
                         array.add(record);
                     }
@@ -144,6 +145,7 @@ public class Data {
                         record.put("Price", rs.getString("price"));
                         record.put("Description", rs.getString("description"));
                         record.put("Title", rs.getString("title"));
+                        record.put("Id_User", rs.getInt("id_user"));
                         record.put("Id", rs.getInt("id_product"));
                         array.add(record);
                     }
@@ -162,6 +164,7 @@ public class Data {
                         record.put("Discount", rs.getInt("discount"));
                         record.put("Total", rs.getInt("total"));
                         record.put("Note", rs.getInt("note"));
+                        record.put("Id_User", rs.getInt("id_user"));
                         record.put("Id", rs.getInt("id_order"));
                         array.add(record);
                     }
@@ -176,6 +179,7 @@ public class Data {
                         record.put("Discount", rs.getInt("discount"));
                         record.put("Total", rs.getInt("total"));
                         record.put("Note", rs.getInt("note"));
+                        record.put("Id_User", rs.getInt("id_user"));
                         record.put("Id", rs.getInt("id_order"));
                         array.add(record);
                     }
@@ -215,18 +219,18 @@ public class Data {
             return rowsAffected + " rows inserted!";
         }
         else if(path[1].equals("orders")){
-            int id_buyer = Integer.parseInt(requestBodyJson.get("Id_Buyer").toString());
+            int id_user = Integer.parseInt(requestBodyJson.get("Id_User").toString());
             int note = Integer.parseInt(requestBodyJson.get("Note").toString());
             int total = Integer.parseInt(requestBodyJson.get("Total").toString());
             int discount = Integer.parseInt(requestBodyJson.get("Discount").toString());
             int isPaid = Integer.parseInt(requestBodyJson.get("isPaid").toString());
             PreparedStatement statement = null;
             int rowsAffected = 0;
-            String query = "INSERT INTO orders(id_buyer, note, total, discount, isPaid) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO orders(id_user, note, total, discount, is_paid) VALUES(?,?,?,?,?)";
             try {
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\n8n0c\\OneDrive\\Documents\\Assignment\\KelasPBO\\API-untuk-aplikasi-e-commerce-sederhana\\ecommerce.db");
                 statement = connection.prepareStatement(query);
-                statement.setInt(1, id_buyer);
+                statement.setInt(1, id_user);
                 statement.setInt(2, note);
                 statement.setInt(3, total);
                 statement.setInt(4, discount);
@@ -239,14 +243,14 @@ public class Data {
             return rowsAffected + " rows inserted!";
         }
         else if(path[1].equals("products")){
-            int id_seller = Integer.parseInt(requestBodyJson.get("Id_Seller").toString());
+            int id_seller = Integer.parseInt(requestBodyJson.get("Id_User").toString());
             String title = requestBodyJson.get("Title").toString();
             String description = requestBodyJson.get("Description").toString();
             int price = Integer.parseInt(requestBodyJson.get("Price").toString());
             int stock = Integer.parseInt(requestBodyJson.get("Stock").toString());
             PreparedStatement statement = null;
             int rowsAffected = 0;
-            String query = "INSERT INTO products(id_seller, title, description, price, stock) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO products(id_user, title, description, price, stock) VALUES(?,?,?,?,?)";
             try {
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\n8n0c\\OneDrive\\Documents\\Assignment\\KelasPBO\\API-untuk-aplikasi-e-commerce-sederhana\\ecommerce.db");
                 statement = connection.prepareStatement(query);
@@ -274,7 +278,7 @@ public class Data {
             String type = (String) requestBodyJson.get("Type");
             PreparedStatement statement = null;
             int rowsAffected = 0;
-            String query = "UPDATE users SET first_name = ?, last_name = ?, email = ?, phone_number = ?, type = ? WHERE id=" + path[2];
+            String query = "UPDATE users SET first_name = ?, last_name = ?, email = ?, phone_number = ?, type = ? WHERE id_user=" + path[2];
             try {
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\n8n0c\\OneDrive\\Documents\\Assignment\\KelasPBO\\API-untuk-aplikasi-e-commerce-sederhana\\ecommerce.db");
                 statement = connection.prepareStatement(query);
@@ -292,14 +296,14 @@ public class Data {
         }
 
         else if(path[1].equals("orders")){
-            int id_buyer = Integer.parseInt(requestBodyJson.get("Id_Buyer").toString());
+            int id_buyer = Integer.parseInt(requestBodyJson.get("Id_User").toString());
             int note = Integer.parseInt(requestBodyJson.get("Note").toString());
             int total = Integer.parseInt(requestBodyJson.get("Total").toString());
             int discount = Integer.parseInt(requestBodyJson.get("Discount").toString());
             int isPaid = Integer.parseInt(requestBodyJson.get("isPaid").toString());
             PreparedStatement statement = null;
             int rowsAffected = 0;
-            String query = "UPDATE orders SET id_buyer = ?, note = ?, total = ?, discount = ?, isPaid = ? WHERE id=" + path[2];
+            String query = "UPDATE orders SET id_user = ?, note = ?, total = ?, discount = ?, is_paid = ? WHERE id_order=" + path[2];
             try {
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\n8n0c\\OneDrive\\Documents\\Assignment\\KelasPBO\\API-untuk-aplikasi-e-commerce-sederhana\\ecommerce.db");
                 statement = connection.prepareStatement(query);
@@ -316,14 +320,14 @@ public class Data {
             return rowsAffected + " rows updated!";
         }
         else if(path[1].equals("products")){
-            int id_seller = Integer.parseInt(requestBodyJson.get("Id_Seller").toString());
+            int id_seller = Integer.parseInt(requestBodyJson.get("Id_User").toString());
             String title = requestBodyJson.get("Title").toString();
             String description = requestBodyJson.get("Description").toString();
             int price = Integer.parseInt(requestBodyJson.get("Price").toString());
             int stock = Integer.parseInt(requestBodyJson.get("Stock").toString());
             PreparedStatement statement = null;
             int rowsAffected = 0;
-            String query = "UPDATE products SET id_seller = ?, title = ?, description = ?,  price = ?, stock = ? WHERE id_products=" + path[2];
+            String query = "UPDATE products SET id_user = ?, title = ?, description = ?,  price = ?, stock = ? WHERE id_product=" + path[2];
             try {
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\n8n0c\\OneDrive\\Documents\\Assignment\\KelasPBO\\API-untuk-aplikasi-e-commerce-sederhana\\ecommerce.db");
                 statement = connection.prepareStatement(query);
@@ -345,8 +349,13 @@ public class Data {
     public String deleteData(String[] path){
         PreparedStatement statement = null;
         int rowsAffected = 0;
+        String id;
+        if(path[1].equals("users")) id = "user";
+        else if(path[1].equals("orders")) id = "order";
+        else if(path[1].equals("products")) id = "product";
+        else id = "nothing";
         try {
-            String query = "DELETE FROM " + path[1] + " WHERE id=" + path[2];
+            String query = "DELETE FROM " + path[1] + " WHERE id_" + id +"=" + path[2];
             Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\n8n0c\\OneDrive\\Documents\\Assignment\\KelasPBO\\API-untuk-aplikasi-e-commerce-sederhana\\ecommerce.db");
             statement = connection.prepareStatement(query);
             rowsAffected = statement.executeUpdate();
