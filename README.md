@@ -487,3 +487,14 @@ Untuk melakukan penambahan data ke dalam server kita perlu mengirimkan url berup
 
 Untuk melakukan penghapusan data yang ada dalam server kita perlu mengirimkan url berupa http:localhost:8101/users/1 dengan request method DELETE. Dengan begitu, id_user = 1 akan dihapuskan dari aplikasi e-Commerce.
 
+# Error 404
+
+Ketika mengirimkan url http:localhost:8101/detail , maka akan ditampilkan pesan error sebab tidak adanya entitas detail, hal tersebut dapat dilihat seperti di bawah ini.
+
+```
+
+<h1><center>404</center></h1>
+<h3><center>Not Found!</center></h3>
+```
+
+
