@@ -6,9 +6,11 @@
 
 **Matkul: Pemrograman Berorientasi Objek** 
 
-Project ini dibuat dalam rangka pemenuhan tugas kedua berupa pembuatan API untuk aplikasi e-commerce secara sederhana, di mana pembuatan API sendiri difungsikan dalam mengakses dan memanipulasi data setiap entitas dari database
+Project ini dibuat dalam rangka pemenuhan tugas kedua berupa pembuatan API untuk aplikasi e-commerce secara sederhana yang nantinya memberikan respons berupa format JSON, di mana pembuatan API sendiri difungsikan dalam mengakses dan memanipulasi data setiap entitas dari database. 
 
 # API-Key Authorization
+
+Pada method apiAuthorization() di bawah ini, kode program di dalamnya akan melakukan mekanisme pengambilan API-Key pada request headers yang dikirimkan oleh user, selanjtnya API-Key tersebut akan dibandingkan dengan API-Key yang sudah ada pada file .env. Apabila nilainya sama maka me-return nilai true dan begitupun sebaliknya.
 
 ```
     public static Boolean apiAuthorization(HttpExchange exchange) throws FileNotFoundException{
@@ -126,18 +128,21 @@ Untuk dapat memperoleh seluruh list user, kita perlu mengirimkan url berupa http
 
 # Informasi User dengan Id Tertentu
 
-Untuk dapat memperoleh detail informasi user berdasarkan id user tertentu, maka kita perlu mengirimkan url berupa http:localhost:8101/users/3 seperti yang terlihat di bawah ini
+Untuk dapat memperoleh detail informasi user beserta alamat yang dimiliki berdasarkan id user tertentu, maka kita perlu mengirimkan url berupa http:localhost:8101/users/3 seperti yang terlihat di bawah ini
 
 ```
 {
     "User Information": [
         {
             "First_Name": "Sinta",
-            "Id_User": 3,
             "Type": "buyer",
             "Email": "sintapurnama@email.com",
             "Last_Name": "Purnama",
-            "Phone_Number": "62879612321"
+            "Id": 3,
+            "City": "Denpasar",
+            "Phone Number": "62879612321",
+            "Postcode": "14045",
+            "Province": "Bali"
         }
     ]
 }
@@ -245,46 +250,23 @@ Untuk dapat memperoleh detail review yang dibuat oleh user berdasarkan id terten
 
 # Daftar Informasi Order
 
-Untuk dapat memperoleh detail informasi order yang dimiliki user berdasarkan id tertentu, maka kita perlu mengirimkan url berupa http:localhost:8101/users/7/orders seperti yang terlihat di bawah ini
+Untuk dapat memperoleh detail informasi order, buyer, order detail, review, product title, price yang dimiliki user berdasarkan id tertentu, maka kita perlu mengirimkan url berupa http:localhost:8101/orders/5 seperti yang terlihat di bawah ini
 
 ```
 {
-    "User Information": [
+   {
+    "Orders Information": [
         {
-            "First_Name": "Rania",
-            "Id_User": 7,
-            "Last_Name": "Putri",
-            "Price": "304000",
-            "Note": "11111",
-            "Title": "Jam Dinding Modern",
-            "Quantity": "4"
-        },
-        {
-            "First_Name": "Rania",
-            "Id_User": 7,
-            "Last_Name": "Putri",
-            "Price": "304000",
-            "Note": "11111",
-            "Title": "Jam Dinding Modern",
-            "Quantity": "4"
-        },
-        {
-            "First_Name": "Rania",
-            "Id_User": 7,
-            "Last_Name": "Putri",
-            "Price": "304000",
-            "Note": "55555",
-            "Title": "Jam Dinding Modern",
-            "Quantity": "4"
-        },
-        {
-            "First_Name": "Rania",
-            "Id_User": 7,
-            "Last_Name": "Putri",
-            "Price": "304000",
-            "Note": "77777",
-            "Title": "Jam Dinding Modern",
-            "Quantity": "4"
+            "idUser": 7,
+            "idOrder": 5,
+            "Description": "Sungguh luar biasa! Produk ini melebihi ekspektasi saya.",
+            "Price": "418000",
+            "Star": 5,
+            "Note": 55555,
+            "idProduct": 10,
+            "Quantity": 2,
+            "Title": "Kacamata Sunglasses Unisex",
+            "Name": "Rania"
         }
     ]
 }
@@ -390,18 +372,24 @@ Untuk dapat memperoleh list seluruh produk beserta informasinya secara lengkap, 
 ```
 
 # Daftar Produk yang Dijual Seller Tertentu
-Untuk dapat memperoleh list produk yang dijual seller berdasarkan id tertentu, maka kita perlu mengirimkan url berupa http:localhost:8101/products/9 seperti yang terlihat di bawah ini
+Untuk dapat memperoleh informasi detail terkait produk yang dijual seller berdasarkan id tertentu, maka kita perlu mengirimkan url berupa http:localhost:8101/products/9 hingga tampak seperti yang di bawah ini.
 
 ```
 {
     "Product Information": [
         {
-            "Id_User": 10,
-            "Description": "Jam dinding modern dengan tampilan minimalis dan mudah terbaca.",
-            "Price": "80000",
-            "Title": "Jam Dinding Modern",
-            "Id": 9,
-            "Stock": 60
+            "First_Name": "Sheilla",
+            "Type": "seller",
+            "Description": "Dompet kulit wanita dengan desain elegan dan banyak saku penyimpanan.",
+            "Email": "sheillaatan8@email.com",
+            "Price": "120000",
+            "Last_Name": "Tania",
+            "Title": "Dompet Kulit Wanita",
+            "Seller": 9,
+            "Id": 8,
+            "id_user": 9,
+            "Phone Number": "62877653480",
+            "Stock": 35
         }
     ]
 }
@@ -409,7 +397,7 @@ Untuk dapat memperoleh list produk yang dijual seller berdasarkan id tertentu, m
 
 # Filtering dengan Query Params
 
-Untuk dapat melihat informasi seluruh user yang memiliki tipe seller maka dapat dengan mengirimkan request url http:localhost:8101/users?type="seller" seperti di bawah ini
+Untuk dapat melihat informasi seluruh user yang memiliki tipe seller maka dapat dengan mengirimkan request url http:localhost:8101/users?type="seller" hingga tampak seperti di bawah ini.
 
 ```
 {
@@ -482,7 +470,7 @@ Untuk melakukan penambahan data ke dalam server kita perlu mengirimkan url berup
 
 # Updating Data ke Server dengan Format JSON
 
-Untuk melakukan penambahan data ke dalam server kita perlu mengirimkan url berupa http:localhost:8101/users/1 dengan request method PUT, selanjutnya kita menambahkan data sesuai yang kita inginkan dalam bentuk JSON seperti yang terlihat di bawah ini
+Untuk melakukan penambahan data ke dalam server kita perlu mengirimkan url berupa http:localhost:8101/users/1 dengan request method PUT, selanjutnya kita menambahkan data sesuai yang kita inginkan dalam bentuk JSON. Dengan begitu,  id_user = 1 akan ter-update datanya sesuai dengan data yang baru diinputkan, seperti yang terlihat di bawah ini.
 
 ```
 {
@@ -497,5 +485,5 @@ Untuk melakukan penambahan data ke dalam server kita perlu mengirimkan url berup
 
 # Deleting Data dalam Server 
 
-Untuk melakukan penghapusan data yang ada dalam server kita perlu mengirimkan url berupa http:localhost:8101/users/1 dengan request method DELETE
+Untuk melakukan penghapusan data yang ada dalam server kita perlu mengirimkan url berupa http:localhost:8101/users/1 dengan request method DELETE. Dengan begitu, id_user = 1 akan dihapuskan dari aplikasi e-Commerce.
 
